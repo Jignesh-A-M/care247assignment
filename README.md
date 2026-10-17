@@ -106,11 +106,11 @@ Add one more `FieldConfig` to `searchConfig`, for example:
 
 ```dart
 FieldConfig(
-  key: 'maritalStatus',
-  type: FieldType.text,
-  label: 'Marital Status',
-  placeholder: 'Enter marital status.',
-  renderOrder: 4,
+key: 'maritalStatus',
+type: FieldType.text,
+label: 'Marital Status',
+placeholder: 'Enter marital status.',
+renderOrder: 4,
 ),
 ```
 
@@ -158,6 +158,7 @@ If the new field has a new type (not text or date), one more `case` is needed in
 - The search form and the results are on one screen. The form opens from the search icon in the app bar. A separate results screen would also be possible.
 - Every search calls the API again so the data is fresh. A cache would save requests, but the data could be old.
 - When a request fails, the error screen replaces the list, even if an older list was loaded before. Keeping the old list under an error banner would be friendlier.
+- Search works only on top-level customer fields. Phones, emails and addresses are lists, so a config key for them would not work.
 - Dates are `String` (`yyyy-MM-dd`) like in the json, and the filter compares them as text.
 - Search is "contains" and ignores upper and lower case. There is no exact match.
 - The colors are written in the widgets. A shared `ThemeData` would be cleaner.
@@ -168,6 +169,9 @@ Tests are in the `test` folder.
 
 - `customer_filter_test.dart`: the customer filter. No filters, blank values, part of a value and upper or lower case, date of birth, many filters together, a field like marital status, no match.
 - `search_text_form_field_test.dart`: the reusable form field widget. Text field: label, typing, keyboard type, done and next action. Date field: label and icon, read only, date picker with OK and with Cancel.
+- `customer_model_test.dart`: json parsing, full name, primary phone and email, empty lists, missing field.
+- `search_config_test.dart`: the search fields, their types, no repeated key or render order, sorted order.
+- `search_cubit_test.dart`: state changes (loading, success, empty, error), search, second search ignored while loading, refresh keeps the filters, clear, toggle. A fake repository is used, so no network is needed.
 - `customer_model_test_data.dart`: sample customer data used by the tests.
 
 Run all tests:
@@ -178,4 +182,4 @@ flutter test
 
 ## Time Spent
 
-About `16` hours.
+About 16 hours.
